@@ -5,6 +5,7 @@ import com.github.bucket4j.common.capacity.Capacity;
 import com.github.bucket4j.common.refill.Refill;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 
 public class Bandwidth implements Serializable {
 
@@ -12,16 +13,19 @@ public class Bandwidth implements Serializable {
     private final int capacityOffset;
     private final Refill refill;
     private final int refillOffset;
-    private final long periodNanos;
-    private final double initialCapacity;
+    private final double initialValue;
 
-    public Bandwidth(Capacity capacity, int capacityOffset, Refill refill, int refillOffset, long periodNanos, double initialCapacity) {
+    public Bandwidth(Capacity capacity, int capacityOffset, Refill refill, int refillOffset, double initialValue) {
         this.capacity = capacity;
         this.capacityOffset = capacityOffset;
         this.refill = refill;
         this.refillOffset = refillOffset;
-        this.periodNanos = periodNanos;
-        this.initialCapacity = initialCapacity;
+        if (initialValue < 0) {
+            String pattern = "{0} is wrong value for initialValue, because initial initialValue should be >= 0";
+            String msg = MessageFormat.format(pattern, initialValue);
+            throw new IllegalArgumentException(msg);
+        }
+        this.initialValue = initialValue;
     }
 
     public Capacity getCapacity() {
@@ -41,11 +45,7 @@ public class Bandwidth implements Serializable {
     }
 
     public double getInitialCapacity() {
-        return initialCapacity;
-    }
-
-    public long getPeriodNanos() {
-        return periodNanos;
+        return initialValue;
     }
 
 }

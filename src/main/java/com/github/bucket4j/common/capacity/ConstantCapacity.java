@@ -5,7 +5,7 @@ import com.github.bucket4j.common.capacity.Capacity;
 
 import java.text.MessageFormat;
 
-public class ConstantCapacity extends Capacity {
+public class ConstantCapacity implements Capacity {
 
     private final double maxValue;
 

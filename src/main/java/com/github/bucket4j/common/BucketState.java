@@ -16,6 +16,8 @@
 
 package com.github.bucket4j.common;
 
+import com.github.metricscore.hdr.counter.SmoothlyDecayingRollingCounter;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -75,6 +77,8 @@ public class BucketState implements Serializable {
         for (int i = 0; i < limitedBandwidth.length; i++) {
             limitedBandwidth[i] = limitedBandwidthsDefinitions.get(i).createBandwidth(stateInitializer, currentTimeNanos);
         }
+
+        SmoothlyDecayingRollingCounter c;
 
         BucketState bucketState = new BucketState(stateInitializer.getState());
         BucketConfiguration bucketConfiguration = new BucketConfiguration(limitedBandwidthsDefinitions, guaranteedBandwidthDefinition, limitedBandwidth, guaranteedBandwidth, timeMeter);

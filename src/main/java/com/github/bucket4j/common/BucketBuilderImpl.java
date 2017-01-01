@@ -119,8 +119,4 @@ public class BucketBuilderImpl implements BucketBuilder {
         return BucketState.createInitialState(limitedBandwidths, guaranteedBandwidth, timeMeter);
     }
 
-    private static void checkCapacities(long maxCapacity, long initialCapacity) {
-
-    }
-
 }
