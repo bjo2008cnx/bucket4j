@@ -1,46 +1,45 @@
-# Bucket4j - is a java implementation of token-bucket algorithm for rate limiting
+# Bucket4j - java 令牌桶实现
 [![Build Status](https://travis-ci.org/vladimir-bukhtoyarov/bucket4j.svg?branch=master)](https://travis-ci.org/vladimir-bukhtoyarov/bucket4j)
 [![Join the chat at https://gitter.im/vladimir-bukhtoyarov/bucket4j](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vladimir-bukhtoyarov/bucket4j?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.github.vladimir-bukhtoyarov:bucket4j)](https://sonarqube.com/dashboard/index/com.github.vladimir-bukhtoyarov:bucket4j)
 
-## Advantages of Bucket4j
-* Implemented on top of ideas of well known algorithm, which are by de-facto standard for rate limiting in the IT industry.
-* Effective lock-free implementation, Bucket4j is good scalable for multithreading case.
-* Absolutely non-compromise precision, Bucket4j does not operate with floats or doubles, all calculation are performed in the integer arithmetic,
-this feature protects end users from calculation errors involved by rounding.
-* Ability to switch from one JVM to cluster in two lines of code. Using Bucket4j you are able to limiting something in the cluster of JVMs.
-Since [release 1.2](https://github.com/vladimir-bukhtoyarov/bucket4j/releases/tag/1.2.0) the ```Bucket4j``` supports any GRID solution which compatible with [JCache API (JSR 107)](https://www.jcp.org/en/jsr/detail?id=107) specification.
-Just use your favorite grid including [Hazelcast](http://hazelcast.com/products/hazelcast/), [Ignite](https://ignite.apache.org/), [Coherence](http://www.oracle.com/technetwork/middleware/coherence/overview/index.html), [Infinispan](http://infinispan.org/) or any other.
-* Ability to specify more than one bandwidth per bucket. For example you can limit 1000 events per hours but not often then 100 events per minute.
+## Bucket4j的优势
+*根据众所周知的算法思想进行实施，这些算法是IT行业速率限制的事实标准。
+*有效的无锁实现，Bucket4j可以很好的扩展多线程的情况。
+*绝对不妥协精度，Bucket4j不使用浮点或双精度运算，所有计算均以整数运算,此功能可保护终端用户免受四舍五入所涉及的计算错误。
+
+*能够以两行代码实现从单JVM模式切换到集群模式。 使用Bucket4j，您可以限制JVM集群中的某些内容。
+从[release 1.2](https://github.com/vladimir-bukhtoyarov/bucket4j/releases/tag/1.2.0)开始，“`Bucket4j```支持与[JCache API（JSR 107）](https://www.jcp.org/en/jsr/detail?id=107)。
+包括Hazelcast，Ignite，Coherence，Infinispan\或任何其他。
+*能够每桶指定多个维度的宽带。 例如，您可以每小时限制1000个事件，但每分钟不能超过100个事件。
 
 ## Documentation
-The items placed in recommended to read order:
-* [Basic-usage](doc-pages/basic-usage.md) - examples of basic usage, just start from here and most likely you will skip the rest items below. 
-* [Brief overview of token-bucket algorithm](doc-pages/token-bucket-brief-overview.md) - the brief overview of token-bucket algorithm. 
-* [Jcache integration](doc-pages/jcache-usage.md) - documentation and examples about usage ```Bucket4j``` with in-memory grids which supports ```JCache API (JSR 107)``` specification.
-* [Advanced usage](doc-pages/advanced-usage.md) - examples of advanced usage.
+推荐阅读顺序：
+* [Basic-usage](doc-pages/basic-usage.md) - 基本使用的例子。 
+* [Brief overview of token-bucket algorithm](doc-pages/token-bucket-brief-overview.md) - 令牌桶算法的简要概述. 
+* [Jcache integration](doc-pages/jcache-usage.md) -使用```Bucket4j```的文档和例子，内置支持```JCache API（JSR 107）```规范的内存实现。
+* [Advanced usage](doc-pages/advanced-usage.md) - 高级使用示例.
 
 Documentation for previous versions:
-* [1.0](https://github.com/vladimir-bukhtoyarov/bucket4j/tree/release_1-0) ```10 May 2015``` First version of bucket4j library
-* [1.1](https://github.com/vladimir-bukhtoyarov/bucket4j/tree/1.1) ```2 Mar 2017``` Removing intrusive support of Oracle Coherence
-* [1.2](https://github.com/vladimir-bukhtoyarov/bucket4j/tree/1.2) ```3 Mar 2017``` Support of JCache and java 8
-* [1.3](https://github.com/vladimir-bukhtoyarov/bucket4j/tree/1.3) ```23 Mar 2017``` Support different styles of synchronization for local bucket
+* [1.0](https://github.com/vladimir-bukhtoyarov/bucket4j/tree/release_1-0) ```10 May 2015``` 初始版本
+* [1.1](https://github.com/vladimir-bukhtoyarov/bucket4j/tree/1.1) ```2 Mar 2017``` 去除对Oracle Coherence的侵扰性
+* [1.2](https://github.com/vladimir-bukhtoyarov/bucket4j/tree/1.2) ```3 Mar 2017```支持 JCache 和 java 8
+* [1.3](https://github.com/vladimir-bukhtoyarov/bucket4j/tree/1.3) ```23 Mar 2017``` 支持本地存储桶的不同风格的同步方式
 
 ## Get Bucket4j library
 
 #### By direct link
 [Download compiled jar, sources, javadocs](https://github.com/vladimir-bukhtoyarov/bucket4j/releases/tag/2.1.0)
 
-#### You can build Bucket4j from sources
+#### 您可以从源代码构建Bucket4j
 ```bash
 git clone https://github.com/vladimir-bukhtoyarov/bucket4j.git
 cd bucket4j
 mvn clean install
 ```
 
-#### You can add Bucket4j to your project as maven dependency
-The Bucket4j is distributed through both [JCenter](https://bintray.com/bintray/jcenter) and [Maven Central](http://search.maven.org/),
-use any of them:
+#### 您可以添加Bucket4j到您的项目作为Maven的依赖
+Bucket4j通过[JCenter]（https://bintray.com/bintray/jcenter）和[Maven Central]（http://search.maven.org/）分发，可使用其中任何一个:
 ```xml
 <dependency>
     <groupId>com.github.vladimir-bukhtoyarov</groupId>
@@ -58,7 +57,7 @@ To use JCache extension you also need to add following dependency:
 ```
 
 ## Have a question?
-Feel free to ask in the [gitter chat](https://gitter.im/vladimir-bukhtoyarov/bucket4j) 
+可在[gitter chat](https://gitter.im/vladimir-bukhtoyarov/bucket4j)上进行讨论 
 
 ## License
 Copyright 2015-2017 Vladimir Bukhtoyarov
