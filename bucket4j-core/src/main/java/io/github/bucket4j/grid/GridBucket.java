@@ -18,12 +18,13 @@
 package io.github.bucket4j.grid;
 
 import io.github.bucket4j.*;
+import io.github.bucket4j.grid.command.*;
 
 import java.io.Serializable;
 import java.util.function.Supplier;
 
 /**
- * Represents the bucket which state actually stored outside current JVM.
+ * 使用外部存储的Bucket
  *
  * @param <K>
  */

@@ -17,6 +17,8 @@
 
 package io.github.bucket4j.grid;
 
+import io.github.bucket4j.grid.command.GridCommand;
+
 import java.io.Serializable;
 
 public interface GridProxy<K extends Serializable> {

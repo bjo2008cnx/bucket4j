@@ -15,7 +15,9 @@
  *    limitations under the License.
  */
 
-package io.github.bucket4j.grid;
+package io.github.bucket4j.grid.command;
+
+import io.github.bucket4j.grid.GridBucketState;
 
 import java.io.Serializable;
 

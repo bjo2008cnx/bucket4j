@@ -1,9 +1,10 @@
-package io.github.bucket4j.grid;
+package io.github.bucket4j.grid.command;
 
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.BucketConfiguration;
 import io.github.bucket4j.BucketState;
+import io.github.bucket4j.grid.GridBucketState;
 
 public class GetAvailableTokensCommand implements GridCommand<Long> {
 

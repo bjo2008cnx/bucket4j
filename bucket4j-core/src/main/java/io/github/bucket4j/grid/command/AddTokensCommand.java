@@ -15,41 +15,37 @@
  *    limitations under the License.
  */
 
-package io.github.bucket4j.grid;
+package io.github.bucket4j.grid.command;
+
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.BucketConfiguration;
 import io.github.bucket4j.BucketState;
+import io.github.bucket4j.grid.GridBucketState;
 
-public class ConsumeAsMuchAsPossibleCommand implements GridCommand<Long> {
+public class AddTokensCommand implements GridCommand<Long> {
 
-    private long limit;
-    private boolean bucketStateModified;
+    private long tokensToAdd;
 
-    public ConsumeAsMuchAsPossibleCommand(long limit) {
-        this.limit = limit;
+    public AddTokensCommand(long tokensToAdd) {
+        this.tokensToAdd = tokensToAdd;
     }
 
     @Override
     public Long execute(GridBucketState gridState) {
         BucketConfiguration configuration = gridState.getBucketConfiguration();
         BucketState state = gridState.getBucketState();
-        long currentTimeNanos = configuration.getTimeMeter().currentTimeNanos();
         Bandwidth[] bandwidths = configuration.getBandwidths();
+        long currentTimeNanos = configuration.getTimeMeter().currentTimeNanos();
+
         state.refillAllBandwidth(bandwidths, currentTimeNanos);
-        long availableToConsume = state.getAvailableTokens(bandwidths);
-        long toConsume = Math.min(limit, availableToConsume);
-        if (toConsume <= 0) {
-            return 0l;
-        }
-        state.consume(bandwidths, toConsume);
-        bucketStateModified = true;
-        return toConsume;
+        state.addTokens(bandwidths, tokensToAdd);
+        return null;
     }
 
     @Override
     public boolean isBucketStateModified() {
-        return bucketStateModified;
+        return true;
     }
 
 }

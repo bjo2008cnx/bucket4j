@@ -15,21 +15,20 @@
  *    limitations under the License.
  */
 
-package io.github.bucket4j.grid;
+package io.github.bucket4j.grid.command;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.BucketConfiguration;
 import io.github.bucket4j.BucketState;
+import io.github.bucket4j.grid.GridBucketState;
 
-public class ReserveAndCalculateTimeToSleepCommand implements GridCommand<Long> {
+public class ConsumeAsMuchAsPossibleCommand implements GridCommand<Long> {
 
-    private long tokensToConsume;
-    private long waitIfBusyNanosLimit;
+    private long limit;
     private boolean bucketStateModified;
 
-    public ReserveAndCalculateTimeToSleepCommand(long tokensToConsume, long waitIfBusyNanosLimit) {
-        this.tokensToConsume = tokensToConsume;
-        this.waitIfBusyNanosLimit = waitIfBusyNanosLimit;
+    public ConsumeAsMuchAsPossibleCommand(long limit) {
+        this.limit = limit;
     }
 
     @Override
@@ -39,15 +38,14 @@ public class ReserveAndCalculateTimeToSleepCommand implements GridCommand<Long> 
         long currentTimeNanos = configuration.getTimeMeter().currentTimeNanos();
         Bandwidth[] bandwidths = configuration.getBandwidths();
         state.refillAllBandwidth(bandwidths, currentTimeNanos);
-
-        long nanosToCloseDeficit = state.delayNanosAfterWillBePossibleToConsume(bandwidths, tokensToConsume);
-        if (waitIfBusyNanosLimit > 0 && nanosToCloseDeficit > waitIfBusyNanosLimit) {
-            return Long.MAX_VALUE;
-        } else {
-            state.consume(bandwidths, tokensToConsume);
-            bucketStateModified = true;
-            return nanosToCloseDeficit;
+        long availableToConsume = state.getAvailableTokens(bandwidths);
+        long toConsume = Math.min(limit, availableToConsume);
+        if (toConsume <= 0) {
+            return 0l;
         }
+        state.consume(bandwidths, toConsume);
+        bucketStateModified = true;
+        return toConsume;
     }
 
     @Override

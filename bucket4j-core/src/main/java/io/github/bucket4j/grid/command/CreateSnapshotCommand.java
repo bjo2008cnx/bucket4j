@@ -15,9 +15,10 @@
  *    limitations under the License.
  */
 
-package io.github.bucket4j.grid;
+package io.github.bucket4j.grid.command;
 
 import io.github.bucket4j.BucketState;
+import io.github.bucket4j.grid.GridBucketState;
 
 public class CreateSnapshotCommand implements GridCommand<BucketState> {
 
